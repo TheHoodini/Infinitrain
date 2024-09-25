@@ -11,7 +11,12 @@ public class FoodController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Rotate the object
+        transform.Rotate(new Vector3(0, 50, 0) * Time.deltaTime);
 
+        // Move the object up and down
+        float newY = Mathf.Sin(Time.time) * 0.2f + 1.8f;
+        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
     
     public void Spawn(){
