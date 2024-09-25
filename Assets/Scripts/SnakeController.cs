@@ -7,7 +7,7 @@ public class SnakeController : MonoBehaviour
     private bool isMoving = true;
     public float MoveSpeed = 5;
     public float RotationSpeed = 180;
-    public int BodySpeed = 5;
+    public float BodySpeed = 15;
     public int TailGap = 150;
     public int ExplosionForce = 600;
 
@@ -25,7 +25,12 @@ public class SnakeController : MonoBehaviour
 
     void Start()
     {
-
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            MoveSpeed *= 0.9f;
+            BodySpeed *= 0.9f;
+            TailGap = Mathf.RoundToInt(TailGap * 0.75f); // Adjust as needed
+        }
     }
 
     void Update()
@@ -59,6 +64,7 @@ public class SnakeController : MonoBehaviour
     public void SpeedUp()
     {
         MoveSpeed += 1f;
+        BodySpeed += 1f;
     }
 
     public void Explode()

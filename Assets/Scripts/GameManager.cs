@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     public void AddScore(int value)
     {
         score += value;
-        scoreText.text = "Score: " + score.ToString();
+        scoreText.text = "SCORE: " + score.ToString();
         CheckScore5();
     }
 
