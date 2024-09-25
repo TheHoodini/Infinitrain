@@ -43,7 +43,7 @@ public class SnakeController : MonoBehaviour
             TailPositions.Insert(0, transform.position);
 
             // Move tail parts
-            int cont = 0;
+            int cont = 1;
             foreach (var body in Tail)
             {
                 Vector3 temp = TailPositions[Mathf.Min(cont * TailGap, TailPositions.Count - 1)];
@@ -56,8 +56,14 @@ public class SnakeController : MonoBehaviour
 
     }
 
+    public void SpeedUp()
+    {
+        MoveSpeed += 1f;
+    }
+
     public void Explode()
     {
+        AudioManager.instance.GameOverSound();
         Vector3 snakePosition = transform.position;
         isMoving = false;
 
@@ -83,28 +89,14 @@ public class SnakeController : MonoBehaviour
 
     public void Grow()
     {
-        Vector3 spawnPosition;
+        Vector3 spawnPosition = Tail.Count > 0 ? Tail[Tail.Count - 1].transform.position : transform.position;
 
-        if (Tail.Count == 0)
-        {
-            // If there are no tail parts, spawn the first one at the snake's current position.
-            spawnPosition = transform.position - transform.forward * (TailGap * 0.01f);
-        }
-        else
-        {
-            // If there are tail parts, spawn at the position of the last tail part.
-            spawnPosition = Tail[Tail.Count - 1].transform.position;
-        }
-
-        // Instantiate the new tail part at the spawn position.
+        // Instantiate new tail part at the spawn position
         GameObject body = Instantiate(TailPrefab, spawnPosition, Quaternion.identity);
         Tail.Add(body);
 
-        // Optional: Initialize the new tail part's rotation to match the last tail part.
-        if (Tail.Count > 1)
-        {
-            body.transform.rotation = Tail[Tail.Count - 2].transform.rotation;
-        }
+        if (Tail.Count > 1) body.transform.rotation = Tail[Tail.Count - 2].transform.rotation;
+
     }
 
 

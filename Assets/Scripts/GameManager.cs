@@ -31,5 +31,16 @@ public class GameManager : MonoBehaviour
     {
         score += value;
         scoreText.text = "Score: " + score.ToString();
+        CheckScore5();
     }
+
+    private void CheckScore5()
+    {
+        if (score % 5 == 0 && score > 0) 
+        {
+            AudioManager.instance.ScoreSound();
+            SnakeController.instance.SpeedUp();
+        }
+    }
+
 }

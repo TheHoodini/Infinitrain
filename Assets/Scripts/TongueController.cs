@@ -25,6 +25,7 @@ public class TongueController : MonoBehaviour
             other.gameObject.GetComponent<FoodController>().Spawn();
             GameManager.instance.AddScore(1);
             SnakeController.instance.Grow();
+            AudioManager.instance.EatSound();
         }
     }
 }
