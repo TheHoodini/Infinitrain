@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -41,6 +40,13 @@ public class GameManager : MonoBehaviour
             AudioManager.instance.ScoreSound();
             SnakeController.instance.SpeedUp();
         }
+    }
+
+    public GameOverScreen gameOverScreen;
+    public void GameOver()
+    {
+        scoreText.gameObject.SetActive(false);
+        gameOverScreen.GameOver(score);
     }
 
 }

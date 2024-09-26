@@ -70,6 +70,7 @@ public class SnakeController : MonoBehaviour
     public void Explode()
     {
         AudioManager.instance.GameOverSound();
+        GameManager.instance.GameOver();
         Vector3 snakePosition = transform.position;
         isMoving = false;
 

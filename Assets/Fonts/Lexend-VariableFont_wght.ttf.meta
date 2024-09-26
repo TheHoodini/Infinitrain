@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 66bd1b55720fb7245b2d59d5988f7ac4
+guid: 8a0fb8c09685f394c81dfdf16aa6db7d
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Poppins
+  - Lexend
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
