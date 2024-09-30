@@ -700,6 +700,7 @@ MonoBehaviour:
   scoreSound: {fileID: 8300000, guid: e3b1cdff43548ee4987a5d40330688d1, type: 3}
   gameOverSound: {fileID: 8300000, guid: 3cfbde8a87fe1a242b9c97f53e2382c6, type: 3}
   eatSound: {fileID: 8300000, guid: f41f7645e44f5e34aa1dbadaac948fde, type: 3}
+  powerUpSound: {fileID: 8300000, guid: 8a6c5751208bedc48915a8fe03aa454e, type: 3}
 --- !u!4 &390878687
 Transform:
   m_ObjectHideFlags: 0
@@ -818,6 +819,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1169513847}
+  pwLever: {fileID: 8689993847717022289, guid: e06a466eb050b2e449d69b1d52796fea, type: 3}
+  pwCarriage: {fileID: 8530760437790147216, guid: 7d862a41ff23f884cbaffbf9d9cd5d33, type: 3}
+  powerActivated: 0
   gameOverScreen: {fileID: 812756827}
 --- !u!4 &527403781
 Transform:
@@ -2428,7 +2432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4559009619822597692, guid: ce9ff2f2633067842a6ee72b70bfa0d7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.7525
+      value: -9
       objectReference: {fileID: 0}
     - target: {fileID: 5299491098684311555, guid: ce9ff2f2633067842a6ee72b70bfa0d7, type: 3}
       propertyPath: m_LocalPosition.x

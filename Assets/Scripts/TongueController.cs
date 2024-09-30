@@ -16,16 +16,29 @@ public class TongueController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Snake"))
+        switch (other.gameObject.tag)
         {
-            SnakeController.instance.Explode();
-        }
-        else if (other.gameObject.CompareTag("Food"))
-        {
-            other.gameObject.GetComponent<FoodController>().Spawn();
-            GameManager.instance.AddScore(1);
-            SnakeController.instance.Grow();
-            AudioManager.instance.EatSound();
+            case "Snake":
+                SnakeController.instance.Explode();
+                break;
+            case "Food":
+                other.gameObject.GetComponent<FoodController>().Spawn();
+                GameManager.instance.AddScore(1);
+                SnakeController.instance.Grow();
+                AudioManager.instance.EatSound();
+                break;
+            case "PwLever":
+                SnakeController.instance.SpeedDown();
+                AudioManager.instance.PowerUpSound();
+                Destroy(other.gameObject);
+                GameManager.instance.powerActivated = false;
+                break;
+            case "PwCarriage":
+                SnakeController.instance.RemoveTailPart();
+                AudioManager.instance.PowerUpSound();
+                Destroy(other.gameObject);
+                GameManager.instance.powerActivated = false;
+                break;
         }
     }
 }

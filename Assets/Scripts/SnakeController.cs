@@ -5,11 +5,11 @@ using UnityEngine;
 public class SnakeController : MonoBehaviour
 {
     private bool isMoving = true;
-    public float MoveSpeed = 5;
-    public float RotationSpeed = 180;
-    public float BodySpeed = 15;
-    public int TailGap = 150;
-    public int ExplosionForce = 600;
+    public float moveSpeed = 5;
+    public float rotationSpeed = 180;
+    public float bodySpeed = 15;
+    public int tailGap = 150;
+    public int explosionForce = 600;
 
     public Transform tongue;
     public GameObject TailPrefab;
@@ -28,9 +28,9 @@ public class SnakeController : MonoBehaviour
     {
         if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
-            MoveSpeed *= 0.9f;
-            BodySpeed *= 0.9f;
-            TailGap = Mathf.RoundToInt(TailGap * 0.75f); // Adjust as needed
+            moveSpeed *= 0.9f;
+            bodySpeed *= 0.9f;
+            tailGap = Mathf.RoundToInt(tailGap * 0.75f); // Adjust as needed
         }
     }
 
@@ -39,11 +39,11 @@ public class SnakeController : MonoBehaviour
         if (isMoving)
         {
             // Move forward
-            transform.position += transform.forward * MoveSpeed * Time.deltaTime;
+            transform.position += transform.forward * moveSpeed * Time.deltaTime;
 
             // Left and right rotation
             float direction = Input.GetAxis("Horizontal");
-            transform.Rotate(Vector3.up, direction * RotationSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.up, direction * rotationSpeed * Time.deltaTime);
 
             // Save tail parts positions
             TailPositions.Insert(0, transform.position);
@@ -52,9 +52,9 @@ public class SnakeController : MonoBehaviour
             int cont = 1;
             foreach (var body in Tail)
             {
-                Vector3 temp = TailPositions[Mathf.Min(cont * TailGap, TailPositions.Count - 1)];
+                Vector3 temp = TailPositions[Mathf.Min(cont * tailGap, TailPositions.Count - 1)];
                 Vector3 moveDirection = temp - body.transform.position;
-                body.transform.position += moveDirection * BodySpeed * Time.deltaTime;
+                body.transform.position += moveDirection * bodySpeed * Time.deltaTime;
                 body.transform.LookAt(temp);
                 cont++;
             }
@@ -64,8 +64,18 @@ public class SnakeController : MonoBehaviour
 
     public void SpeedUp()
     {
-        MoveSpeed += 1f;
-        BodySpeed += 1f;
+        moveSpeed += 1f;
+        bodySpeed += 1f;
+    }
+
+    public void SpeedDown()
+    {
+        if (moveSpeed > 1)
+        {
+            moveSpeed = 1;
+            bodySpeed = 1;
+            return;
+        }
     }
 
     public void Explode()
@@ -73,14 +83,14 @@ public class SnakeController : MonoBehaviour
         AudioManager.instance.GameOverSound();
         GameManager.instance.GameOver();
         tongue.gameObject.SetActive(false);
-        
+
         Vector3 snakePosition = transform.position;
         isMoving = false;
 
         // Add explosion force to the snake head
         Rigidbody snakeRb = GetComponent<Rigidbody>();
         snakeRb.isKinematic = false;
-        snakeRb.AddExplosionForce(ExplosionForce, snakePosition, 10);
+        snakeRb.AddExplosionForce(explosionForce, snakePosition, 10);
 
         foreach (var body in Tail)
         {
@@ -89,12 +99,10 @@ public class SnakeController : MonoBehaviour
             {
                 Rigidbody rb = body.GetComponent<Rigidbody>();
                 if (rb == null) rb = body.AddComponent<Rigidbody>();
-                rb.AddExplosionForce(ExplosionForce, snakePosition, 10);
+                rb.AddExplosionForce(explosionForce, snakePosition, 10);
             }
         }
     }
-
-
 
     public void Grow()
     {
@@ -106,6 +114,20 @@ public class SnakeController : MonoBehaviour
 
         if (Tail.Count > 1) body.transform.rotation = Tail[Tail.Count - 2].transform.rotation;
 
+    }
+
+    public void RemoveTailPart()
+    {
+        int partsToRemove = Mathf.CeilToInt(Tail.Count * 0.05f);
+        for (int i = 0; i < partsToRemove; i++)
+        {
+            if (Tail.Count > 0)
+            {
+                GameObject tailPart = Tail[Tail.Count - 1];
+                Tail.RemoveAt(Tail.Count - 1);
+                Destroy(tailPart);
+            }
+        }
     }
 
 

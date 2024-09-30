@@ -11,6 +11,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip scoreSound;
     public AudioClip gameOverSound;
     public AudioClip eatSound;
+    public AudioClip powerUpSound;
 
     private void Awake()
     {
@@ -20,16 +21,6 @@ public class AudioManager : MonoBehaviour
         audioSource.pitch = 1.8f;
         audioSource.volume = 0.4f;
     }
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
-
     public void ScoreSound()
     {
         audioSource.PlayOneShot(scoreSound);
@@ -44,5 +35,10 @@ public class AudioManager : MonoBehaviour
     public void EatSound()
     {
         audioSource.PlayOneShot(eatSound);
+    }
+
+    public void PowerUpSound()
+    {
+        audioSource.PlayOneShot(powerUpSound);
     }
 }

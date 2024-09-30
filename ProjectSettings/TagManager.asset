@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Snake
   - Food
+  - PwLever
+  - PwCarriage
   layers:
   - Default
   - TransparentFX
