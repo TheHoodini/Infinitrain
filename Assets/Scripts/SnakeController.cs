@@ -11,6 +11,7 @@ public class SnakeController : MonoBehaviour
     public int TailGap = 150;
     public int ExplosionForce = 600;
 
+    public Transform tongue;
     public GameObject TailPrefab;
     private List<GameObject> Tail = new List<GameObject>();
     private List<Vector3> TailPositions = new List<Vector3>();
@@ -71,25 +72,26 @@ public class SnakeController : MonoBehaviour
     {
         AudioManager.instance.GameOverSound();
         GameManager.instance.GameOver();
+        tongue.gameObject.SetActive(false);
+        
         Vector3 snakePosition = transform.position;
         isMoving = false;
 
+        // Add explosion force to the snake head
+        Rigidbody snakeRb = GetComponent<Rigidbody>();
+        snakeRb.isKinematic = false;
+        snakeRb.AddExplosionForce(ExplosionForce, snakePosition, 10);
+
         foreach (var body in Tail)
         {
-            // Check if the body part exists to preent null reference exceptions
+            // Check if the body part exists to prevent null reference exceptions
             if (body != null)
             {
                 Rigidbody rb = body.GetComponent<Rigidbody>();
                 if (rb == null) rb = body.AddComponent<Rigidbody>();
-                rb.AddExplosionForce(ExplosionForce, snakePosition, 5);
-            }
-            else
-            {
-                Debug.LogWarning("A tail part is null in the Tail list");
+                rb.AddExplosionForce(ExplosionForce, snakePosition, 10);
             }
         }
-
-        // Destroy(gameObject, 3f); 
     }
 
 
