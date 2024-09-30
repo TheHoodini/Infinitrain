@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SnakeController : MonoBehaviour
+public class TrainController : MonoBehaviour
 {
     private bool isMoving = true;
     public float moveSpeed = 5;
-    public float rotationSpeed = 180;
-    public float bodySpeed = 15;
-    public int tailGap = 150;
+    public float rotationSpeed = 300;
+    //public float bodySpeed = 15;
+    public int tailGap = 15;
     public int explosionForce = 600;
 
     public Transform tongue;
@@ -16,7 +16,7 @@ public class SnakeController : MonoBehaviour
     private List<GameObject> Tail = new List<GameObject>();
     private List<Vector3> TailPositions = new List<Vector3>();
 
-    public static SnakeController instance;
+    public static TrainController instance;
 
 
     private void Awake()
@@ -26,15 +26,10 @@ public class SnakeController : MonoBehaviour
 
     void Start()
     {
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
-        {
-            moveSpeed *= 0.9f;
-            bodySpeed *= 0.9f;
-            tailGap = Mathf.RoundToInt(tailGap * 0.75f); // Adjust as needed
-        }
+
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (isMoving)
         {
@@ -54,7 +49,7 @@ public class SnakeController : MonoBehaviour
             {
                 Vector3 temp = TailPositions[Mathf.Min(cont * tailGap, TailPositions.Count - 1)];
                 Vector3 moveDirection = temp - body.transform.position;
-                body.transform.position += moveDirection * bodySpeed * Time.deltaTime;
+                body.transform.position += moveDirection * moveSpeed * Time.deltaTime;
                 body.transform.LookAt(temp);
                 cont++;
             }
@@ -65,16 +60,13 @@ public class SnakeController : MonoBehaviour
     public void SpeedUp()
     {
         moveSpeed += 1f;
-        bodySpeed += 1f;
     }
 
     public void SpeedDown()
     {
         if (moveSpeed > 1)
         {
-            moveSpeed = 1;
-            bodySpeed = 1;
-            return;
+            moveSpeed -= 0.5f;
         }
     }
 
@@ -84,22 +76,22 @@ public class SnakeController : MonoBehaviour
         GameManager.instance.GameOver();
         tongue.gameObject.SetActive(false);
 
-        Vector3 snakePosition = transform.position;
+        Vector3 trainPosition = transform.position;
         isMoving = false;
 
-        // Add explosion force to the snake head
-        Rigidbody snakeRb = GetComponent<Rigidbody>();
-        snakeRb.isKinematic = false;
-        snakeRb.AddExplosionForce(explosionForce, snakePosition, 10);
+        // Add explosion force to the train head
+        Rigidbody trainRb = GetComponent<Rigidbody>();
+        trainRb.isKinematic = false;
+        trainRb.AddExplosionForce(explosionForce, trainPosition, 10);
 
         foreach (var body in Tail)
         {
-            // Check if the body part exists to prevent null reference exceptions
             if (body != null)
             {
+                // Add explosion force to the tail parts
                 Rigidbody rb = body.GetComponent<Rigidbody>();
                 if (rb == null) rb = body.AddComponent<Rigidbody>();
-                rb.AddExplosionForce(explosionForce, snakePosition, 10);
+                rb.AddExplosionForce(explosionForce, trainPosition, 10);
             }
         }
     }
@@ -108,7 +100,6 @@ public class SnakeController : MonoBehaviour
     {
         Vector3 spawnPosition = Tail.Count > 0 ? Tail[Tail.Count - 1].transform.position : transform.position;
 
-        // Instantiate new tail part at the spawn position
         GameObject body = Instantiate(TailPrefab, spawnPosition, Quaternion.identity);
         Tail.Add(body);
 
@@ -116,8 +107,9 @@ public class SnakeController : MonoBehaviour
 
     }
 
-    public void RemoveTailPart()
+    public void RemoveTailParts()
     {
+        // Remove 5% of the tail parts
         int partsToRemove = Mathf.CeilToInt(Tail.Count * 0.05f);
         for (int i = 0; i < partsToRemove; i++)
         {

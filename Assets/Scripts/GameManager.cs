@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         if (score % 5 == 0 && score > 0)
         {
             AudioManager.instance.ScoreSound();
-            SnakeController.instance.SpeedUp();
+            TrainController.instance.SpeedUp();
         }
     }
 

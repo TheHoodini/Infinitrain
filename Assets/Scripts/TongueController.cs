@@ -19,22 +19,22 @@ public class TongueController : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Snake":
-                SnakeController.instance.Explode();
+                TrainController.instance.Explode();
                 break;
             case "Food":
                 other.gameObject.GetComponent<FoodController>().Spawn();
                 GameManager.instance.AddScore(1);
-                SnakeController.instance.Grow();
+                TrainController.instance.Grow();
                 AudioManager.instance.EatSound();
                 break;
             case "PwLever":
-                SnakeController.instance.SpeedDown();
+                TrainController.instance.SpeedDown();
                 AudioManager.instance.PowerUpSound();
                 Destroy(other.gameObject);
                 GameManager.instance.powerActivated = false;
                 break;
             case "PwCarriage":
-                SnakeController.instance.RemoveTailPart();
+                TrainController.instance.RemoveTailParts();
                 AudioManager.instance.PowerUpSound();
                 Destroy(other.gameObject);
                 GameManager.instance.powerActivated = false;
